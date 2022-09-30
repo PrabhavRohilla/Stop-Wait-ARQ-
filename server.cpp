@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <string>
+#include <time.h>
 using namespace std;
 
 int main()
@@ -21,7 +22,7 @@ int main()
 
     struct sockaddr_in hint;
     hint.sin_family = AF_INET;
-    hint.sin_port = htons(7980);
+    hint.sin_port = htons(8000);
     inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
 
     std::cout << "Binding socket to sockaddr..." << std::endl;
@@ -73,7 +74,10 @@ int main()
         }
         
         // display message
+
+        //sleep(10);
         std::cout << "Received: " << std::string(buf, 0, bytesRecv) << "\r\n";
+        //for(long long i=0;i<=1e10;i++);
 
         // return message
         if(buf[strlen(buf)-1]=='0') flag=1;
