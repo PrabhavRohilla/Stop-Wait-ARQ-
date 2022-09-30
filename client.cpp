@@ -1,13 +1,13 @@
-#include <iostream>
 #include <bits/stdc++.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <string.h>
-#include <string>
 #include<ctime>
+#include <thread>
+#include <chrono>
+
 #include<time.h>
 
 using namespace std;
@@ -37,7 +37,7 @@ int main()
     }
 
     //	Create a hint structure for the server we're connecting with
-    int port = 7980;
+    int port = 8000;
     string ipAddress = "127.0.0.1";
 
     sockaddr_in hint;
@@ -58,7 +58,9 @@ int main()
     string userInput;
     char ack='0';
     timer t;
-    int time_out = 3;
+    time_t tim=time(NULL);
+    struct tm *tm = localtime(&tim);
+    int time_out = 1;
     do {
         //		Enter lines of text
        if(f!=true){
@@ -71,7 +73,10 @@ int main()
         // if(ack=='0') ack='1';
         // else ack='1';
         t.start();
-        sleep(5);
+        //this_thread::sleep_for(chrono::milliseconds(5000));
+        struct tm *tm2 = localtime(&tim);
+        //cout << endl << tm2-tm << endl;
+        for(long long i=0;i<=1e10;i++);     
         int sendRes = send(sock, (userInput + ack).c_str(), userInput.size() + 1, 0);
         
         if (sendRes == -1)
@@ -86,8 +91,8 @@ int main()
         int bytesReceived = 0;
         while(bytesReceived==0){
             f = false;
-            cout << t.elapsedTime();
             bytesReceived = recv(sock, buf, 4096, 0);
+            cout << t.elapsedTime();
             if(t.elapsedTime()>=time_out){
                 cout<<"Timed out.\n";
                 f = true;
